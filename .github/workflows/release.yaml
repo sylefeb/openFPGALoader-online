@@ -1,0 +1,36 @@
+name: release
+
+on:
+  push:
+
+permissions:
+  contents: write
+
+jobs:
+  release-openFPGALoader:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Build
+        shell: bash
+        run: |
+          cd openFPGALoader-online
+          ./build-no-pthread.sh
+      - name: Package
+        shell: bash
+        run: |
+          ./package.sh
+          ls -la
+      - name: Release
+        uses: ncipollo/release-action@v1
+        if: hashFiles('release.tgz') != ''
+        with:
+          allowUpdates: True
+          prerelease: True
+          omitBody: True
+          omitBodyDuringUpdate: True
+          omitNameDuringUpdate: True
+          tag: bucket-linux-x64
+          artifacts: "release.tgz"
+          token: ${{ secrets.GITHUB_TOKEN }}
