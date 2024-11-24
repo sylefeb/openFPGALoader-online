@@ -15,7 +15,6 @@ jobs:
       - name: Build
         shell: bash
         run: |
-          cd openFPGALoader-online
           ./build-no-pthread.sh
       - name: Package
         shell: bash
