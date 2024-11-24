@@ -72,3 +72,6 @@ emcmake cmake -S openFPGALoader-src -B openFPGALoader-build \
     -DCMAKE_EXE_LINKER_FLAGS="-O2 -no-pthread -lembind ${EMCC_FLAGS}" \
     -DCMAKE_EXECUTABLE_SUFFIX_CXX=".js"
 emmake make -C openFPGALoader-build VERBOSE=1 -j16
+
+cp openFPGALoader-build/openFPGALoader.js test/
+cp openFPGALoader-build/openFPGALoader.wasm test/
