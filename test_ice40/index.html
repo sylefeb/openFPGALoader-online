@@ -21,7 +21,7 @@ var Module = {
 
 Module['onRuntimeInitialized'] = function() {
 
-  var url = 'https://localhost:4443/bitstream.zip'
+  var url = 'https://localhost:4443/bitstream_icebreaker.zip'
 
   new JSZip.external.Promise(function (resolve, reject) {
       JSZipUtils.getBinaryContent(url, function(err, data) {
@@ -61,8 +61,6 @@ function assert() {}
         console.log(`Selected device: ${device.productName}`);
         // Program the USB device
         Module.callMain(['-b','ice40_generic','/bitstream'])
-        // Module.callMain(['--scan-usb'])
-        // Module.callMain(['--Version'])        
       } catch (err) {
         console.error(`Error: ${err}`);
       }

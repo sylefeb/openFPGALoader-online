@@ -1,0 +1,73 @@
+<!doctypehtml><html lang=en-us><head><meta charset=utf-8><meta content="text/html; charset=utf-8"http-equiv=Content-Type><title>OpenFPGALoader online test</title></head><body>
+
+<script src=jszip.min.js></script>
+<script src=jszip-utils.min.js></script>
+
+<button id="selectAndProgramDevice">Select ulx3s device</button>
+
+<p>
+This test will program a blinky on a ULX3S board, using
+the ulx3s profile of openFPGALoader. The bitstream is in the 
+accomapnying zip file.
+</p>
+
+<script>
+
+var Module = {
+        preRun: [function(){console.log('preRun')}],
+        'print': function(text) { console.log(':: ' + text) },
+        'printErr': function(text) { console.log(':: ' + text) }
+}
+
+Module['onRuntimeInitialized'] = function() {
+
+  var url = 'https://localhost:4443/bitstream_ulx3s.zip'
+
+  new JSZip.external.Promise(function (resolve, reject) {
+      JSZipUtils.getBinaryContent(url, function(err, data) {
+          if (err) {
+              reject(err);
+          } else {
+              resolve(data);
+          }
+      });
+  }).then(function (data) {
+      return JSZip.loadAsync(data);
+  })
+  .then(function success(zip) {
+      console.log("success", zip.files);
+      // write in FS
+      zip.file("bitstream.bit").async("uint8array")
+        .then(function (content) {
+          FS.writeFile('/bitstream.bit', content, { encoding: "binary" });
+          console.log(content);
+        });
+  }, function failure(e) {
+      console.error("failure", e);
+  });
+
+}
+
+function assert() {}
+</script>
+
+<script src=openFPGALoader.js></script>
+
+<script>
+    // Request access to a USB device
+    document.getElementById('selectAndProgramDevice').addEventListener('click', async () => {
+      try {
+        const device = await navigator.usb.requestDevice({ filters: [] });
+        console.log(`Selected device: ${device.productName}`);
+        // Program the USB device
+        Module.callMain(['-b','ulx3s','/bitstream.bit'])
+        // Module.callMain(['--scan-usb'])
+        // Module.callMain(['--Version'])
+      } catch (err) {
+        console.error(`Error: ${err}`);
+      }
+    });
+
+</script>
+
+</body></html>
