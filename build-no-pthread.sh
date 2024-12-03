@@ -73,5 +73,8 @@ emcmake cmake -S openFPGALoader-src -B openFPGALoader-build \
     -DCMAKE_EXECUTABLE_SUFFIX_CXX=".js"
 emmake make -C openFPGALoader-build VERBOSE=1 -j16
 
-cp openFPGALoader-build/openFPGALoader.js test/
-cp openFPGALoader-build/openFPGALoader.wasm test/
+cp openFPGALoader-build/openFPGALoader.js test_ice40/
+cp openFPGALoader-build/openFPGALoader.wasm test_ice40/
+
+cp openFPGALoader-build/openFPGALoader.js test_ulx3s/
+cp openFPGALoader-build/openFPGALoader.wasm test_ulx3s/
