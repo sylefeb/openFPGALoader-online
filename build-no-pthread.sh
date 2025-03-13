@@ -61,8 +61,8 @@ EMCC_FLAGS=" \
 -s EXPORTED_RUNTIME_METHODS=FS,stackAlloc,stringToUTF8OnStack,callMain \
 -s EXPORTED_FUNCTIONS=_main,_fflush \
 -s TEXTDECODER=1 \
--s WASM_BIGINT=1 -O1 \
--s ASSERTIONS=2 \
+-s WASM_BIGINT=1 -O2 \
+-s ASSERTIONS=0 \
 -s DISABLE_EXCEPTION_CATCHING=0 \
 "
 emcmake cmake -S openFPGALoader-src -B openFPGALoader-build \
